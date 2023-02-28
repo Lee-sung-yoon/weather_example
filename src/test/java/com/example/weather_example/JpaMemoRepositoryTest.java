@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @SpringBootTest
-//@Transactional
+@Transactional
 public class JpaMemoRepositoryTest {
 
     @Autowired
