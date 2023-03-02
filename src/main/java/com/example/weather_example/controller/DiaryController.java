@@ -2,6 +2,8 @@ package com.example.weather_example.controller;
 
 import com.example.weather_example.domain.Diary;
 import com.example.weather_example.service.DiaryService;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.*;
@@ -17,6 +19,7 @@ public class DiaryController {
         this.diaryService = diaryService;
     }
 
+    @ApiOperation(value = "여기에 치면 어디에 뜰까?" , notes = "이것은 노트") // ->  value => swagger에 한 줄 설명 쓸 수 있는 방법!, note => swagger에서 맞는 controller 눌렀을때 보다 좀 긴 설명이 필요할때
     @PostMapping("/create/diary")
     void createDiary(@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate date, @RequestBody String text) {
 
@@ -29,8 +32,8 @@ public class DiaryController {
     }
 
     @GetMapping("/read/diaries")
-    List<Diary> readDiaries(@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate startDate,
-                            @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) LocalDate endDate) {
+    List<Diary> readDiaries(@RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) @ApiParam(value = "첫번째 날", example = "2020-02-02")LocalDate startDate,
+                            @RequestParam @DateTimeFormat(iso=DateTimeFormat.ISO.DATE) @ApiParam(value = "마지막 날", example = "2020-02-02") LocalDate endDate) {
         return diaryService.readDiaries(startDate, endDate);
     }
 
