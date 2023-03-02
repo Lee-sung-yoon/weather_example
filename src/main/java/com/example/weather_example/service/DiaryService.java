@@ -1,5 +1,6 @@
 package com.example.weather_example.service;
 
+import com.example.weather_example.WeatherExampleApplication;
 import com.example.weather_example.domain.DateWeather;
 import com.example.weather_example.domain.Diary;
 import com.example.weather_example.repository.DateWeatherRepository;
@@ -8,6 +9,8 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -33,6 +36,8 @@ public class DiaryService {
     private final DiaryRepository diaryRepository;
     private final DateWeatherRepository dateWeatherRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(WeatherExampleApplication.class);
+
     public DiaryService(DiaryRepository diaryRepository, DateWeatherRepository dateWeatherRepository) {
         this.diaryRepository = diaryRepository;
         this.dateWeatherRepository = dateWeatherRepository;
@@ -46,6 +51,7 @@ public class DiaryService {
 
     @Transactional(isolation = Isolation.SERIALIZABLE)
     public void createDiary(LocalDate date, String text) {
+        logger.info("started to create diary");
 //        // open weather map 에서 데이터 가져오기
 //        String weatherData = getWeatherString();
 //
@@ -61,6 +67,7 @@ public class DiaryService {
         nowDiary.setText(text);
         nowDiary.setDate(date);
         diaryRepository.save(nowDiary);
+        logger.info("end to create diary");
     }
 
     private DateWeather getWeatherFromApi() {
@@ -94,6 +101,7 @@ public class DiaryService {
     }
 
     public List<Diary> readDiaries(LocalDate startDate, LocalDate endDate) {
+        logger.debug("read diary");
         return diaryRepository.findAllByDateBetween(startDate, endDate);
     }
 
