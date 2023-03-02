@@ -3,6 +3,7 @@ package com.example.weather_example.service;
 import com.example.weather_example.WeatherExampleApplication;
 import com.example.weather_example.domain.DateWeather;
 import com.example.weather_example.domain.Diary;
+import com.example.weather_example.error.InvalidDate;
 import com.example.weather_example.repository.DateWeatherRepository;
 import com.example.weather_example.repository.DiaryRepository;
 import org.json.simple.JSONArray;
@@ -97,6 +98,9 @@ public class DiaryService {
 
     @Transactional(readOnly = true)
     public List<Diary> readDiary(LocalDate date) {
+//        if (date.isAfter(LocalDate.ofYearDay(3050, 1))) {
+//            throw new InvalidDate();
+//        }
         return diaryRepository.findAllByDate(date);
     }
 
